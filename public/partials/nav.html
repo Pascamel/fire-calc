@@ -1,0 +1,21 @@
+<nav class="navbar" ng-controller="MainMenuCtrl">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" ui-sref="splash">Root</a>
+		</div>
+		<div id="navbar" class="collapse navbar-collapse">
+			<ul class="nav navbar-nav">
+				<li><a href ui-sref="login" ng-show="!authSvc.isLoggedIn()">login</a></li>
+				<li><a href ui-sref="user-dashboard" ng-show="authSvc.isLoggedIn()">Dashboard</a></li>
+				<li><a href ui-sref="app" ng-show="authSvc.isLoggedIn()">App</a></li>
+				<li><a href ng-click="logoutUser()" ng-show="authSvc.isLoggedIn()">Logout</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>

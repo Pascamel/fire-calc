@@ -1,25 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="fireapp">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WIP</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://npmcdn.com/angular-toastr/dist/angular-toastr.css" />
+
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script> -->
+    <!-- <script defer src="/__/firebasejs/5.5.6/firebase.js"></script> -->
+    <!-- <script defer>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyBQs6yJ2euReTS-aTua1KDKGdm0bLeCRO0",
+        authDomain: "firecalculator-6b0f6.firebaseapp.com",
+        databaseURL: "https://firecalculator-6b0f6.firebaseio.com",
+        projectId: "firecalculator-6b0f6",
+        // storageBucket: "firecalculator-6b0f6.appspot.com",
+        messagingSenderId: "816782235195"
+      };
+      firebase.initializeApp(config);
+    </script> -->
     <script defer src="/__/firebase/5.5.6/firebase-app.js"></script>
     <script defer src="/__/firebase/5.5.6/firebase-auth.js"></script>
-    <script defer src="/__/firebase/5.5.6/firebase-database.js"></script>
+    <!-- <script defer src="/__/firebase/5.5.6/firebase-database.js"></script> -->
+    <script defer src="/__/firebase/5.5.6/firebase-firestore.js"></script>
     <script defer src="/__/firebase/init.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.5/angular.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.5/angular-route.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.20/angular-ui-router.min.js"></script>
+    <script defer src="https://npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+    <!-- <script defer src="https://cdnjs.cloudflare.com/ajax/libs/angularFire/2.3.0/angularfire.min.js"></script> -->
+    <script defer src="./js/app.js"></script>
+    <script defer src="./js/services.js"></script>
+    <script defer src="./js/controllers.js"></script>
   </head>
   <body>
-    <h1>Hello friend</h1>
-    <script>
+    <div ng-include="'partials/nav.html'"></div>
+    <!-- <h1>Hello friend</h1> -->
+    <!-- <script> 
       document.addEventListener('DOMContentLoaded', function() {
         try {
           let app = firebase.app();
           let features = ['auth', 'database'].filter(feature => typeof app[feature] === 'function');
-          document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
         } catch (e) {
           console.error(e);
         }
       });
     </script>
+    -->
+    <div class="container">
+      <div ui-view></div>
+    </div>
   </body>
+
 </html>
