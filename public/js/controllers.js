@@ -27,14 +27,14 @@ angular.module('fireapp').controller('loginCtrl', function($scope, AuthSvc, toas
 	};
 });
 
-angular.module('fireapp').controller('appCtrl', function($scope, dataSvc, toastr) {
+angular.module('fireapp').controller('appCtrl', function($scope, AuthSvc, DataSvc, toastr) {
 	$scope.addProperty = () => {
 		$scope.data[$scope.newPropertyName] = 0
 	};
 
 	$scope.init = () => {
 		$scope.data = {};
-		dataSvc.loadFinances().then((data) => {
+		DataSvc.loadFinances().then((data) => {
 			$scope.data = data;
 		}).catch((error) => {
 			toastr.error(error.message || 'An error occurred. Please try again later.');
@@ -42,16 +42,26 @@ angular.module('fireapp').controller('appCtrl', function($scope, dataSvc, toastr
 	};
 
 	$scope.saveChanges = () => {
-		dataSvc.saveFinances($scope.data).then(() => {
+		DataSvc.saveFinances($scope.data).then(() => {
 			toastr.success('Data updated successfully');
 		}).catch((error) => {
 		    toastr.error(error.message || 'An error occurred. Please try again later.');
 		});
 	};
 
-	$scope.init();
+	AuthSvc.waitForAuth().then($scope.init);
 });
 
-angular.module('fireapp').controller('dashboardCtrl', function($scope) {
-	// TODO
+angular.module('fireapp').controller('dashboardCtrl', function($scope, AuthSvc, DataSvc) {
+	$scope.init = () => {
+		console.log('ok lets init')
+		$scope.data = {};
+		DataSvc.lastUpdateFinances().then((data) => {
+			$scope.lastUpdate = moment.unix(data/1000).fromNow();
+		}).catch((error) => {
+			toastr.error(error.message || 'An error occurred. Please try again later.');
+		});
+	};
+
+	AuthSvc.waitForAuth().then($scope.init);
 });
