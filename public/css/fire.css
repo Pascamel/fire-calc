@@ -1,0 +1,37 @@
+.label-fake-input {
+    display: inline-block;
+    line-height: 34px;
+    width: 300px;
+}
+
+.padding612 {
+    padding: 6px 12px;
+}
+
+.loading-spinner {
+    text-align: center;
+    background: #f5f5f5;
+    padding: 10px;
+}
+
+.amount-container span {
+    cursor: pointer;
+}
+
+.vertical-td {
+    vertical-align: middle !important;
+    line-height: 0 !important;
+    padding: 0 !important;
+}
+
+.vertical-td div {
+    transform: rotate(-90deg);
+    line-height: 0;
+}
+
+.table-finances thead tr th:nth-child(1), 
+.table-finances tbody tr:nth-child(2) td:nth-child(2), 
+.table-finances tbody tr td:nth-child(1) {
+    width: 24px;
+    text-align: center;
+}

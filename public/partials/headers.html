@@ -1,0 +1,86 @@
+<div class="row">
+	<div class="col-xs-12">
+		<a ui-sref="app" class="btn btn-default">
+			<i class="fa fa-chevron-left"></i>
+			Back to Finances
+		</a>	
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<h1>Starting point</h1>
+	</div>
+</div>
+	
+<div class="row">
+	<div class="col-xs-12" ng-loading="loaded">
+		<div class="form-inline">
+			<label>Starting Capital</label>
+			<input type="text" ng-model="headers.startingCapital" class="form-control /">
+			<label>First month</label>
+			<select ng-model="headers.firstMonth" class="form-control" ng-options="o as labelMonth(o) for o in _.range(1, 13)"></select>
+			<select ng-model="headers.firstYear" class="form-control" ng-options="o as o for o in _.range(currentYear - 10, currentYear + 1)"></select>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+		<h1>Headers</h1>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12" ng-loading="loaded">
+		<span ng-show="!headers.headers.length">No headers</span>
+		<ul ng-repeat="header in headers.headers track by header.id" class="list-unstyled">
+			<div class="form-inline">
+				<div class="row">
+					<div class="col-xs-3">
+						<span class="label-fake-input" ng-hide="header.$edit">
+							{{header.label}}
+						</span>
+						<input type="text" ng-model="header.$editLabel" class="form-control" ng-show="header.$edit">
+					</div>
+					<div class="col-xs-3">
+						<span class="label-fake-input" ng-hide="header.$edit">
+							{{header.sublabel}}
+						</span>
+						<input type="text" ng-model="header.$editSublabel" class="form-control" ng-show="header.$edit">
+					</div>
+					<div class="col-xs-6" style="text-align: right">
+						<div class="checkbox padding612">
+							<label>
+								<input type="checkbox" ng-model="header.principal" ng-disabled="!header.$edit"> P
+							</label>
+						</div>
+						<div class="checkbox padding612">
+							<label>
+								<input type="checkbox" ng-model="header.interest" ng-disabled="!header.$edit"> I
+							</label>
+						</div>
+						<div class="checkbox padding612">
+							<label>
+								<input type="checkbox" ng-model="header.total" ng-disabled="!header.$edit"> T
+							</label>
+						</div>
+						<a href class="btn btn-link" ng-hide="header.$edit" ng-click="editHeader(header)">Edit</a>
+						<a href class="btn btn-link" ng-show="header.$edit" ng-click="editHeaderConfirm(header)">Confirm</a>
+						<a href class="btn btn-link" ng-show="header.$edit" ng-click="editHeaderCancel(header)">Cancel</a>
+						<a href class="btn btn-link" ng-click="removeHeader(header)">Delete</a>
+						<a href class="btn btn-link" ng-click="moveUpHeader(header)" disabled="disabled">Up</a>
+						<a href class="btn btn-link" ng-click="moveDownHeader(header)" disabled="disabled">Down</a>
+					</div>
+				</div>
+			</div>
+		</ul>
+		<div class="form-inline">
+			<input type="text" ng-model="newHeaderLabel" class="form-control" />
+			<input type="text" ng-model="newHeaderSublabel" class="form-control" />
+			<button class="btn btn-default" ng-click="addHeader()">Add header</button>
+			<button class="btn btn-default pull-right" ng-click="saveChanges()">Save</button>
+		</div>
+	</div>
+</div>

@@ -16,27 +16,38 @@ angular.module('fireapp').config(function($stateProvider, $urlRouterProvider, $l
         url: '/login',
         templateUrl: './partials/login.html',
         controller: 'loginCtrl'
-    }).state('app', {
-        url: '/app',
-        templateUrl: './partials/app.html',
-        controller: 'appCtrl'
     }).state('user-dashboard', {
         url: '/user-dashboard',
         templateUrl: './partials/dashboard.html',
         controller: 'dashboardCtrl'
+    }).state('app', {
+        url: '/app',
+        templateUrl: './partials/app.html',
+        controller: 'appCtrl'
+    }).state('headers', {
+        url: '/headers',
+        templateUrl: './partials/headers.html',
+        controller: 'headersCtrl'
     });
 
     $locationProvider.html5Mode(true);
 });
 
-angular.module('fireapp').run(function($state) {
+angular.module('fireapp').run(function($state, $rootScope) {
+    $rootScope._ = _;
+
 	firebase.auth().onAuthStateChanged((user) => {
 		if (user) {
-            if (!$state.is('app')) {
+            if (!$state.is('app') && !$state.is('headers')) {
                 $state.go('user-dashboard');
             }
 		} else {
 			$state.go('splash');
 		}
-	});
+    });
+    
+    angular.element(document).bind('keyup', (e) => {
+        if (e.keyCode !== 27 && e.keyCode !== 13) return;
+        $rootScope.$broadcast('global:keypress', e.keyCode);
+    });
 });
