@@ -34,7 +34,9 @@
       <tbody ng-repeat="(year, year_savings) in savings">
         <tr>
           <td class="td-chevron">
-            <fire-collapse-toggle flag="year_headers.collapsed[year]"></fire-collapse-toggle>
+            <div tooltip-placement="right" uib-tooltip="{{year_headers.collapsed[year]?year:''}}">
+              <fire-collapse-toggle flag="year_headers.collapsed[year]"></fire-collapse-toggle>
+            </div>
           </td>
           <td colspan="{{headersLine2.length + 7}}" align="text-align: left" ng-hide="year_headers.collapsed[year]">
             <span class="pull-left">
