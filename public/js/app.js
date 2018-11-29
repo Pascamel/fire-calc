@@ -3,12 +3,12 @@
 angular.module('fireapp', ['ui.router', 'ui.bootstrap', 'toastr']);
 
 angular.module('fireapp').config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-	$urlRouterProvider.otherwise(($injector) => {
+  $urlRouterProvider.otherwise(($injector) => {
     var $state = $injector.get('$state');
     $state.go('splash');
   });
 
-	$stateProvider.state('splash', {
+  $stateProvider.state('splash', {
     url: '/',
     templateUrl: './partials/splash.html',
     controller: 'splashCtrl'
@@ -40,14 +40,14 @@ angular.module('fireapp').config(function($stateProvider, $urlRouterProvider, $l
 angular.module('fireapp').run(function($state, $rootScope) {
   $rootScope._ = _;
 
-	firebase.auth().onAuthStateChanged((user) => {
-		if (user) {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
       if (_.reduce(['headers', 'savings', 'revenues'], (acc, s) => acc && !$state.is(s), true)) {
         $state.go('user-dashboard');
       }
-		} else {
-			$state.go('splash');
-		}
+    } else if (_.reduce(['login'], (acc, s) => acc && !$state.is(s), true)) {
+      $state.go('splash');
+    }
   });
     
   angular.element(document).bind('keyup', (e) => {
