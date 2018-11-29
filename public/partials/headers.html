@@ -1,21 +1,11 @@
 <div class="row">
 	<div class="col-xs-12">
-		<a ui-sref="app" class="btn btn-default">
-			<i class="fa fa-chevron-left"></i>
-			Back to Finances
-		</a>	
-	</div>
-</div>
-
-
-<div class="row">
-	<div class="col-xs-12">
-		<h1>Starting point</h1>
+		<h3>Starting point</h1>
 	</div>
 </div>
 	
 <div class="row">
-	<div class="col-xs-12" ng-loading="loaded">
+	<div class="col-xs-12" fire-loading="loaded">
 		<div class="form-inline">
 			<label>Starting Capital</label>
 			<input type="text" ng-model="headers.startingCapital" class="form-control /">
@@ -28,12 +18,12 @@
 
 <div class="row">
 	<div class="col-xs-12">
-		<h1>Headers</h1>
+		<h3>Headers</h1>
 	</div>
 </div>
 
 <div class="row">
-	<div class="col-xs-12" ng-loading="loaded">
+	<div class="col-xs-12" fire-loading="loaded">
 		<span ng-show="!headers.headers.length">No headers</span>
 		<ul ng-repeat="header in headers.headers track by header.id" class="list-unstyled">
 			<div class="form-inline">

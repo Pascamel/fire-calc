@@ -13,7 +13,16 @@
 			<ul class="nav navbar-nav">
 				<li><a href ui-sref="login" ng-show="!authSvc.isAuthenticated()">login</a></li>
 				<li><a href ui-sref="user-dashboard" ng-show="authSvc.isAuthenticated()">Dashboard</a></li>
-				<li><a href ui-sref="app" ng-show="authSvc.isAuthenticated()">App</a></li>
+				<li class="dropdown" ng-show="authSvc.isAuthenticated()" uib-dropdown>
+					<a href role="button" class="dropdown-toggle" uib-dropdown-toggle>
+						App <b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href ui-sref="headers">Headers</a></li>
+						<li><a href ui-sref="savings">Savings</a></li>
+						<li><a href ui-sref="revenues">Revenues</a></li>
+					</ul>
+				</li>
 				<li><a href ng-click="logoutUser()" ng-show="authSvc.isAuthenticated()">Logout</a></li>
 			</ul>
 		</div>

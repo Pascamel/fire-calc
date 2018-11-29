@@ -105,7 +105,7 @@ angular.module('fireapp').service('DataSvc', function ($q) {
 
 		this.firestore.collection('finances').doc(userId).get().then((snapshot) => {
 			if (snapshot.exists) {
-				deferred.resolve(snapshot.data().data);
+				deferred.resolve(snapshot.data());
 			} else {
 				deferred.resolve({});
 			}
@@ -114,16 +114,28 @@ angular.module('fireapp').service('DataSvc', function ($q) {
 		return deferred.promise;
 	};
 
-	this.saveFinances = (data) => {
+	this.saveFinances = (data, goals) => {
 		let userId = firebase.auth().currentUser.uid;
 		if (!userId) return;
 
 		let payload = {
 			last_update: (new Date()).getTime(),
-			data: JSON.parse(angular.toJson(data))
+			data: JSON.parse(angular.toJson(data)),
+			goals: JSON.parse(angular.toJson(goals))
 		}
 
 		return this.firestore.collection('finances').doc(userId).set(payload);
+	};
+
+	return self;
+});
+
+
+angular.module('fireapp').service('CurrencySvc', function ($q) {
+	var self = this;
+
+	this.roundFloat = (num) => {
+		return Math.round((num + 0.00001) * 100) / 100;
 	};
 
 	return self;

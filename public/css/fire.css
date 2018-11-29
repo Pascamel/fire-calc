@@ -1,7 +1,15 @@
+label {
+    font-weight: normal;
+}
+
 .label-fake-input {
     display: inline-block;
     line-height: 34px;
     width: 300px;
+}
+
+.alert span {
+    margin-left: 20px;
 }
 
 .padding612 {
@@ -14,8 +22,26 @@
     padding: 10px;
 }
 
+.amount-container {
+    display: inline-block;
+}
+
 .amount-container span {
+    min-width: 50px; 
+    width: 100%;
+    height: 16px; 
+    display: inline-block;
+}
+
+.amount-container.bold span {
+    font-weight: bold;
+}
+.amount-container:not(.read-only) span {
     cursor: pointer;
+}
+
+.amount-container:not(.read-only) span:hover {
+    background: rgba(0,0,0,0.1);
 }
 
 .vertical-td {
@@ -29,9 +55,21 @@
     line-height: 0;
 }
 
-.table-finances thead tr th:nth-child(1), 
-.table-finances tbody tr:nth-child(2) td:nth-child(2), 
-.table-finances tbody tr td:nth-child(1) {
+.table-finances tbody tr td.td-chevron {
     width: 24px;
     text-align: center;
+}
+
+.table-finances thead tr th {
+    text-align: center;
+}
+
+.table-finances tbody tr td, .table-finances tfoot tr td {
+    text-align: right;
+    padding: 8px 3px;
+}
+
+.table-finances tbody tr:not(.tr-total) td:not(:last-child):nth-child(n+3) {
+    border-left: 1px solid;
+    border-left-color:rgba(0,0,0,0.05);
 }

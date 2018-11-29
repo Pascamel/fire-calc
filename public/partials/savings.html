@@ -1,0 +1,109 @@
+<div class="row">
+	<div class="col-xs-12" fire-loading="loaded">
+		<div class="alert" ng-class="{'alert-danger': dataUpdated}">
+			<button class="btn" ng-class="{'btn-default': !dataUpdated, 'btn-danger': dataUpdated}" ng-click="saveChanges()">Save</button>
+			<span ng-show="dataUpdated">
+				<i class="fa fa-lg  fa-exclamation-triangle"></i>
+				Updates have been detected. Save now!
+			</span>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12" fire-loading="loaded">
+		<table class="table table-striped table-finances">
+			<thead>
+				<tr>
+					<th colspan="2"></th>
+					<th ng-repeat="header1 in headersLine1" colspan="{{header1.weight}}">{{header1.label}}</th>
+					<th colspan="4">Total</th>
+					<th colspan="2">Goal</th>
+				</tr>
+				<tr>
+					<th colspan="2"></th>
+					<th ng-repeat="header2 in headersLine2 track by $index">{{header2}}</th>
+					<th>Principal</th>
+					<th>Interest</th>
+					<th>Total</th>
+					<th>Total</th>
+					<th>Month</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody ng-repeat="(year, year_savings) in savings">
+				<tr>
+					<td class="td-chevron">
+						<fire-collapse-toggle flag="year_headers.collapsed[year]"></fire-collapse-toggle>
+					</td>
+					<td colspan="{{headersLine2.length + 7}}" align="text-align: left">
+						<span class="pull-left">
+							{{ year }}
+						</span>
+						<span>
+							Begins at <b>{{ startOfYearAmount(year) | amount }}</b> -
+							Goal is <fire-amount type="year" id="year" institution="year_headers.goals" types="[]" class="'bold'"></fire-amount>
+							({{ monthlyGoal(year) }}/mo)
+						</span>
+					</td>
+				</tr>
+				<tr ng-repeat="(month, amounts) in year_savings" ng-hide="year_headers.collapsed[year]">
+					<td class="vertical-td" ng-if="$index === 0" rowspan="{{ _.keys(year_savings).length }}">
+						<div>{{ year }}</div>
+					</td>
+					<td>{{ month }}</td>
+					<td ng-repeat="amount in inputLine">
+						<fire-amount type="amount.type" id="amount.id" institution="savings[year][month][amount.id]" types="amount.types"></fire-amount>
+					</td>
+					<td>{{ totalMonth(month, year, 'P') | amount }}</td>
+					<td>{{ totalMonth(month, year, 'I') | amount }}</td>
+					<td>{{ totalMonth(month, year, 'T') | amount }}</td>
+					<td>{{ totalHolding(month, year) | amount }}</td>
+					<td ng-class="{'danger': goalMonth(month, year) < 0, 'success': goalMonth(month, year) >= 0}">
+						{{ goalMonth(month, year) | amount:true }}
+					</td>
+					<td ng-class="{'danger': goalTotal(month, year) < 0, 'success': goalTotal(month, year) >= 0}">
+						{{ goalTotal(month, year) | amount:true }}
+					</td>
+				</tr>
+				<tr class="tr-total">
+					<td colspan="2">Total</td>
+					<td ng-repeat="amount in inputLine">
+						{{ totalInstitution(year, amount.id, amount.type) | amount:true }}
+					</td>
+					<td colspan="2"></td>
+					<td ng-hide="year_headers.collapsed[year]" colspan="4"></td>
+					<td ng-show="year_headers.collapsed[year]">Total</td>
+					<td ng-show="year_headers.collapsed[year]" class="warning">{{ totalHolding('12', year) | amount }}</td>
+					<td ng-show="year_headers.collapsed[year]">Goal</td>
+					<td ng-show="year_headers.collapsed[year]" ng-class="{'danger': goalTotal('12', year) < 0, 'success': goalTotal('12', year) >= 0}">
+						{{ goalTotal('12', year) | amount:true }}
+					</td>
+				</tr>
+			<tbody>
+			<tfoot>
+				<tr>
+					<td colspan="2"><i class="fa fa-university"></i></td>
+					<td ng-repeat="amount in inputLine" class="warning">
+						{{ grandTotalInstitution(amount.id, amount.type) | amount:true }}
+					</td>
+					<td colspan="3">Total</td>
+					<td class="warning">{{ grandTotalHolding() | amount }}</td>
+					<td colspan="2"></td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12" fire-loading="loaded">
+		<div class="alert" ng-class="{'alert-danger': dataUpdated}">
+			<button class="btn" ng-class="{'btn-default': !dataUpdated, 'btn-danger': dataUpdated}" ng-click="saveChanges()">Save</button>
+			<span ng-show="dataUpdated">
+				<i class="fa fa-lg  fa-exclamation-triangle"></i>
+				Updates have been detected. Save now!
+			</span>
+		</div>
+	</div>
+</div>

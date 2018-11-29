@@ -20,10 +20,14 @@ angular.module('fireapp').config(function($stateProvider, $urlRouterProvider, $l
         url: '/user-dashboard',
         templateUrl: './partials/dashboard.html',
         controller: 'dashboardCtrl'
-    }).state('app', {
-        url: '/app',
-        templateUrl: './partials/app.html',
-        controller: 'appCtrl'
+    }).state('savings', {
+        url: '/savings',
+        templateUrl: './partials/savings.html',
+        controller: 'savingsCtrl'
+    }).state('revenues', {
+        url: '/revenues',
+        templateUrl: './partials/revenues.html',
+        controller: 'revenuesCtrl'
     }).state('headers', {
         url: '/headers',
         templateUrl: './partials/headers.html',
@@ -38,7 +42,7 @@ angular.module('fireapp').run(function($state, $rootScope) {
 
 	firebase.auth().onAuthStateChanged((user) => {
 		if (user) {
-            if (!$state.is('app') && !$state.is('headers')) {
+            if (_.reduce(['headers', 'savings', 'revenues'], (acc, s) => acc && !$state.is(s), true)) {
                 $state.go('user-dashboard');
             }
 		} else {
