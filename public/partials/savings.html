@@ -36,7 +36,7 @@
           <td class="td-chevron">
             <fire-collapse-toggle flag="year_headers.collapsed[year]"></fire-collapse-toggle>
           </td>
-          <td colspan="{{headersLine2.length + 7}}" align="text-align: left">
+          <td colspan="{{headersLine2.length + 7}}" align="text-align: left" ng-hide="year_headers.collapsed[year]">
             <span class="pull-left">
               {{ year }}
             </span>
@@ -45,6 +45,16 @@
               Goal is <fire-amount type="year" id="year" institution="year_headers.goals" types="[]" class="'bold'"></fire-amount>
               ({{ monthlyGoal(year) }}/mo)
             </span>
+          </td>
+          <td ng-show="year_headers.collapsed[year]"></td>
+          <td ng-show="year_headers.collapsed[year]" ng-repeat="amount in inputLine">
+            {{ totalInstitution(year, amount.id, amount.type) | amount:true }}
+          </td>
+          <td ng-show="year_headers.collapsed[year]" colspan="3">Total</td>
+          <td ng-show="year_headers.collapsed[year]" class="warning">{{ totalHolding('12', year) | amount }}</td>
+          <td ng-show="year_headers.collapsed[year]">Goal</td>
+          <td ng-show="year_headers.collapsed[year]" ng-class="{'danger': goalTotal('12', year) < 0, 'success': goalTotal('12', year) >= 0}">
+            {{ goalTotal('12', year) | amount:true }}
           </td>
         </tr>
         <tr ng-repeat="(month, amounts) in year_savings" ng-hide="year_headers.collapsed[year]">
@@ -66,17 +76,15 @@
             {{ goalTotal(month, year) | amount:true }}
           </td>
         </tr>
-        <tr class="tr-total">
+        <tr class="tr-total" ng-hide="year_headers.collapsed[year]">
           <td colspan="2">Total</td>
           <td ng-repeat="amount in inputLine">
             {{ totalInstitution(year, amount.id, amount.type) | amount:true }}
           </td>
-          <td colspan="2"></td>
-          <td ng-hide="year_headers.collapsed[year]" colspan="4"></td>
-          <td ng-show="year_headers.collapsed[year]">Total</td>
-          <td ng-show="year_headers.collapsed[year]" class="warning">{{ totalHolding('12', year) | amount }}</td>
-          <td ng-show="year_headers.collapsed[year]">Goal</td>
-          <td ng-show="year_headers.collapsed[year]" ng-class="{'danger': goalTotal('12', year) < 0, 'success': goalTotal('12', year) >= 0}">
+          <td colspan="3">Total</td>
+          <td class="warning">{{ totalHolding('12', year) | amount }}</td>
+          <td>Goal</td>
+          <td  ng-class="{'danger': goalTotal('12', year) < 0, 'success': goalTotal('12', year) >= 0}">
             {{ goalTotal('12', year) | amount:true }}
           </td>
         </tr>
