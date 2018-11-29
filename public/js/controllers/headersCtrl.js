@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('fireapp').controller('headersCtrl', function($scope, AuthSvc, DataSvc, toastr) {
 	$scope.init = () => {
 		$scope.currentYear = new Date().getFullYear();

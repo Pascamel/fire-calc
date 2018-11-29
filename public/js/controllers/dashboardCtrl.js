@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('fireapp').controller('dashboardCtrl', function($scope, AuthSvc, DataSvc, toastr) {
 	$scope.init = () => {
 		$scope.data = {};	

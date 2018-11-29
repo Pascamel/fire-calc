@@ -1,9 +1,16 @@
+'use strict';
+
 angular.module('fireapp').service('AuthSvc', function ($q, $timeout) {
 	var self = this;
 
 	self.isAuthenticated = () => {
 		var user = firebase.auth().currentUser;
 		return !!user;
+	};
+
+	self.userDisplay = () => {
+		var user = firebase.auth().currentUser;
+		return _.get(user, 'email', 'N/A');
 	};
 
 	self.login = (email, password) => {

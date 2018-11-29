@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('fireapp').controller('savingsCtrl', function($scope, $q, AuthSvc, DataSvc, CurrencySvc, toastr) {
 	$scope.addProperty = () => {
 		$scope.data[$scope.newPropertyName] = 0
@@ -46,7 +48,7 @@ angular.module('fireapp').controller('savingsCtrl', function($scope, $q, AuthSvc
 			.value();
 		$scope.headersLine2 = _($scope.headers)
 			.map((header) => {
-				o = [];
+				var o = [];
 				if (header.principal) o.push(header.sublabel || 'Principal');
 				if (header.interest) o.push('Interest');
 				if (header.total) o.push('Total');
@@ -56,7 +58,7 @@ angular.module('fireapp').controller('savingsCtrl', function($scope, $q, AuthSvc
 			.value();
 		$scope.inputLine = _($scope.headers)
 			.map((header) => {
-				o = [];
+				var o = [];
 				if (header.principal) o.push({id: header.id, type: 'P'});
 				if (header.interest) o.push({id: header.id, type: 'I'});
 				if (header.total) o.push({id: header.id, type: 'T'});

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('fireapp').service('CurrencySvc', function ($q) {
 	var self = this;
 

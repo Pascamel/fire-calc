@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('fireapp').service('DataSvc', function ($q) {
 	var self = this;
 

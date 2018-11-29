@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('fireapp').filter('amount', function($filter, CurrencySvc) {
   return function(number, display_if_zero) {
     if (number === 0 && !display_if_zero) return '';

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('fireapp').directive('fireAmount', function() {
   return {
     restrict: 'E',

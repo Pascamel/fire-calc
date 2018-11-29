@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('fireapp').controller('mainMenuCtrl', function($scope, AuthSvc, toastr) {
 	$scope.authSvc = AuthSvc;
 

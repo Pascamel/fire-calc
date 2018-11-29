@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('fireapp').controller('loginCtrl', function($scope, AuthSvc, toastr) {
 	$scope.email = '';
 	$scope.password = '';

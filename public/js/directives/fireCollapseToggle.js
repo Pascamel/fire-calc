@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('fireapp').directive('fireCollapseToggle', function() {
   return {
     restrict: 'E',
