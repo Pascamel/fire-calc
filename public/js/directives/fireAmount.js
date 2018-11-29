@@ -1,34 +1,3 @@
- 'use strict';
-
-angular.module('fireapp').directive('ngLoading', function ($compile) {
-  return {
-    restrict: 'A',
-    link: function (scope, element, attrs) {
-      element.parent().append('<div class="col-xs-12 loading-spinner" ng-show="loaded"><div class="fa fa-spinner fa-spin"></div></div>');
-      scope.$watch(attrs.ngLoading, (val) => {
-        if (val) {
-          angular.element(document.querySelector(".loading-spinner")).remove();
-          element.removeClass('ng-hide');
-        } else {
-          element.addClass('ng-hide');
-        }
-      });
-    }
-  };
-});
-
-
-angular.module('fireapp').directive('fireCollapseToggle', function() {
-  return {
-    restrict: 'E',
-    scope: {
-      flag: '='
-    },
-    template: '<i class="fa" ng-class="{\'fa-chevron-right\': flag, \'fa-chevron-down\': !flag}" ng-click="flag=!flag"></i>'
-  };
-});
-
-
 angular.module('fireapp').directive('fireAmount', function() {
   return {
     restrict: 'E',

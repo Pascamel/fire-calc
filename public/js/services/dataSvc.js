@@ -1,36 +1,3 @@
-angular.module('fireapp').service('AuthSvc', function ($q, $timeout) {
-	var self = this;
-
-	self.isAuthenticated = () => {
-		var user = firebase.auth().currentUser;
-		return !!user;
-	};
-
-	self.login = (email, password) => {
-		return firebase.auth().signInWithEmailAndPassword(email || '', password || '');
-	}
-
-	self.logout = () => {
-		return firebase.auth().signOut();
-	}
-
-	self.waitForAuth = () => {
-		var deferred = $q.defer();
-
-		if (self.isAuthenticated()) {
-			deferred.resolve(true);
-		}
-
-		firebase.auth().onAuthStateChanged((user) => {
-			deferred.resolve(!!user);
-		});
-		return deferred.promise;
-	}
-
-	return self;
-});
-
-
 angular.module('fireapp').service('DataSvc', function ($q) {
 	var self = this;
 
@@ -125,17 +92,6 @@ angular.module('fireapp').service('DataSvc', function ($q) {
 		}
 
 		return this.firestore.collection('finances').doc(userId).set(payload);
-	};
-
-	return self;
-});
-
-
-angular.module('fireapp').service('CurrencySvc', function ($q) {
-	var self = this;
-
-	this.roundFloat = (num) => {
-		return Math.round((num + 0.00001) * 100) / 100;
 	};
 
 	return self;
