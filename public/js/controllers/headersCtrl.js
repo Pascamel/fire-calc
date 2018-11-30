@@ -59,9 +59,9 @@ angular.module('fireapp').controller('headersCtrl', function($scope, AuthSvc, Da
   $scope.removeHeader = (header) => {
     modalSvc.showModal({
       closeButtonText: 'Cancel',
-      actionButtonText: 'Delete Customer',
-      headerText: 'Delete roger lemerre?',
-      bodyText: 'Are you sure you want to delete this customer?'
+      actionButtonText: 'Delete',
+      headerText: 'Delete',
+      bodyText: 'Are you sure you want to delete this institution?'
     }).then((result) => {
       _.remove($scope.headers.headers, (h) => h.id === header.id);
     });

@@ -1,6 +1,8 @@
 'use strict';
 
 angular.module('fireapp').service('modalSvc', function ($uibModal) {
+  var self = this;
+
   let modalDefaults = {
     backdrop: true,
     keyboard: true,
@@ -15,13 +17,13 @@ angular.module('fireapp').service('modalSvc', function ($uibModal) {
     bodyText: 'Perform this action?'
   };
 
-  this.showModal = (customModalDefaults, customModalOptions) => {
+  self.showModal = (customModalOptions, customModalDefaults) => {
     if (!customModalDefaults) customModalDefaults = {};
     customModalDefaults.backdrop = 'static';
-    return this.show(customModalDefaults, customModalOptions);
+    return this.show(customModalOptions, customModalDefaults);
   };
 
-  this.show = (customModalOptions, customModalDefaults) => {
+  self.show = (customModalOptions, customModalDefaults) => {
     let tempModalDefaults = {};
     let tempModalOptions = {};
 
@@ -42,4 +44,6 @@ angular.module('fireapp').service('modalSvc', function ($uibModal) {
 
     return $uibModal.open(tempModalDefaults).result;
   };
+
+  return self;
 });
