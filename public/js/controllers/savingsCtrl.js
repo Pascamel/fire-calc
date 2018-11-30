@@ -9,6 +9,12 @@ angular.module('fireapp').controller('savingsCtrl', function($scope, $q, AuthSvc
     $scope.dataUpdated = false;
     $scope.headers = {};
     $scope.data = [];
+
+    $scope.floatTheadOptions = {
+      scrollingTop: 0,
+      useAbsolutePositioning: false
+    };
+
     $q.all([DataSvc.loadHeaders(), DataSvc.loadFinances()]).then((data) => {
       $scope.formatHeaders(data[0]);
       $scope.formatData(data[1].data);

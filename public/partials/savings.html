@@ -12,7 +12,7 @@
 
 <div class="row">
   <div class="col-xs-12" fire-loading="loaded">
-    <table class="table table-striped table-finances">
+    <table class="table table-striped table-finances" float-thead="floatTheadOptions" ng-model="savings">
       <thead>
         <tr>
           <th colspan="2"></th>
@@ -63,7 +63,7 @@
           </td>
         </tr>
         <tr ng-repeat="(month, amounts) in year_savings" ng-hide="year_headers.collapsed[year]">
-          <td class="vertical-td" ng-if="$index === 0" rowspan="{{ _.keys(year_savings).length }}">
+          <td class="vertical" ng-if="$index === 0" rowspan="{{ _.keys(year_savings).length }}">
             <div>{{ year }}</div>
           </td>
           <td>{{ month }}</td>

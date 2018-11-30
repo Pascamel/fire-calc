@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('fireapp', ['ui.router', 'ui.bootstrap', 'toastr']);
+angular.module('fireapp', ['ui.router', 'ui.bootstrap', 'toastr', 'floatThead']);
 
 angular.module('fireapp').config(function($stateProvider, $urlRouterProvider, $locationProvider) {
   $urlRouterProvider.otherwise(($injector) => {

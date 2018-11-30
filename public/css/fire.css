@@ -61,16 +61,20 @@ label {
   background: rgba(0,0,0,0.1);
 }
 
-.vertical-td {
+table.floatThead-table {
+  border-top: none;
+  border-bottom: none;
+  background-color: #fff;
+}
+.table-finances tbody tr td.vertical {
   vertical-align: middle !important;
   line-height: 0 !important;
   padding: 0 !important;
 }
-.vertical-td div {
+.table-finances tbody tr td.vertical div {
   transform: rotate(-90deg);
   line-height: 0;
 }
-
 .table-finances tbody tr td.td-chevron {
   width: 24px;
   text-align: center;
