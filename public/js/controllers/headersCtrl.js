@@ -5,6 +5,7 @@ angular.module('fireapp').controller('headersCtrl', function($scope, AuthSvc, Da
     $scope.currentYear = new Date().getFullYear();
     $scope.newHeaderLabel = '';
     $scope.newHeaderSublabel = '';
+    $scope.newHeaderIcon = '';
     $scope.headers = {};
     $scope.headers.startingCapital = 0;
     $scope.headers.firstMonth = new Date().getMonth();
@@ -27,25 +28,27 @@ angular.module('fireapp').controller('headersCtrl', function($scope, AuthSvc, Da
       id: DataSvc.newUUID(),
       label: $scope.newHeaderLabel,
       sublabel: $scope.newHeaderSublabel,
+      icon: $scope.newHeaderIcon,
       sorting: $scope.headers.headers.length,
-      principal: true,
-      interet: false,
-      total: false
+      interest: false
     };
     $scope.headers.headers.push(h);
     $scope.newHeaderLabel = '';
     $scope.newHeaderSublabel = '';
+    $scope.newHeaderIcon = '';
   };
 
   $scope.editHeader = (header) => {
     header.$edit = true;
     header.$editLabel = header.label;
     header.$editSublabel = header.sublabel;
+    header.$editIcon = header.icon;
   };
 
   $scope.editHeaderConfirm = (header) => {
     header.label = header.$editLabel;
     header.sublabel = header.$editSublabel;
+    header.icon = header.$editIcon;
     header.$edit = false;
   }
 
@@ -59,11 +62,28 @@ angular.module('fireapp').controller('headersCtrl', function($scope, AuthSvc, Da
     });
   };
 
+  $scope.moveUpHeader = (index) => {
+    if (index <= 0 || index >= $scope.headers.headers.length) return;
+
+    var tmp = $scope.headers.headers[index-1];
+    $scope.headers.headers[index-1] = $scope.headers.headers[index];
+    $scope.headers.headers[index] = tmp;
+  };
+
+  $scope.moveDownHeader = (index) => {
+    if (index < 0 || index >= $scope.headers.headers.length - 1) return;
+
+    var tmp = $scope.headers.headers[index+1];
+    $scope.headers.headers[index+1] = $scope.headers.headers[index];
+    $scope.headers.headers[index] = tmp;
+  };
+
   $scope.saveChanges = () => {
     _.each($scope.headers.headers, (header) => {
       delete header.$edit;
       delete header.$editLabel;
       delete header.$editSublabel;
+      delete header.$editIcon;
     });
 
     $scope.headers.startingCapital = parseFloat($scope.headers.startingCapital) || 0;
@@ -71,7 +91,7 @@ angular.module('fireapp').controller('headersCtrl', function($scope, AuthSvc, Da
     DataSvc.saveHeaders($scope.headers).then(() => {
       toastr.success('Headers updated successfully');
     }).catch((error) => {
-        toastr.error(error.message || 'An error occurred. Please try again later.');
+      toastr.error(error.message || 'An error occurred. Please try again later.');
     });
   };
 

@@ -28,42 +28,47 @@ angular.module('fireapp').controller('savingsCtrl', function($scope, $q, AuthSvc
 
   $scope.formatHeaders = (d) => {
     angular.extend($scope, d);
+    
     $scope.headersLine1 = _($scope.headers)
       .map((header) => {
         return {
           label: header.label,
-          weight: (header.principal ? 1 : 0) + (header.interest ? 1 : 0) + (header.total ? 1 : 0)
+          icon: header.icon,
+          weight: header.interest ? 3 : 1
         };
       })
       .groupBy('label')
       .map((header, key) => {
-        let temp = _.reduce(header, (sum, v) => {
-          return sum + v.weight;
-        }, 0);
         return {
           label: key,
-          weight: temp
+          icon: header[0].icon,
+          weight: _.reduce(header, (sum, h) => sum + h.weight, 0)
         };
       })
       .value();
+
     $scope.headersLine2 = _($scope.headers)
       .map((header) => {
-        var o = [];
-        if (header.principal) o.push(header.sublabel || 'Principal');
-        if (header.interest) o.push('Interest');
-        if (header.total) o.push('Total');
-        return o;
+        var headers = [header.sublabel || 'Principal'];
+        if (header.interest) _.each(['Interest', 'Total'], (t) => headers.push(t)); 
+        headers = _.map(headers, (h, idx) => {
+          console.log(h, idx, headers.length)
+          return {
+            label: h,
+            last: idx === headers.length-1
+          }
+        });
+        return headers;
       })
       .flatMap()
       .value();
+
     $scope.inputLine = _($scope.headers)
       .map((header) => {
-        var o = [];
-        if (header.principal) o.push({id: header.id, type: 'P'});
-        if (header.interest) o.push({id: header.id, type: 'I'});
-        if (header.total) o.push({id: header.id, type: 'T'});
-        _.each(o, (item) => { item.types = _.map(o, 'type')});
-        return o;
+        var headers = [{id: header.id, type: 'P'}];
+        if (header.interest) _.each(['I', 'T'], (t) => headers.push({id: header.id, type: t})); 
+        _.each(headers, (item) => { item.types = _.map(headers, 'type')});
+        return headers;
       })
       .flatMap()
       .value();

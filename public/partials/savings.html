@@ -16,17 +16,20 @@
       <thead>
         <tr>
           <th colspan="2"></th>
-          <th ng-repeat="header1 in headersLine1" colspan="{{header1.weight}}">{{header1.label}}</th>
-          <th colspan="4">Total</th>
+          <th class="separator" ng-repeat="header1 in headersLine1" colspan="{{header1.weight}}">
+              <span ng-hide="header1.icon">{{header1.label}}</span>
+              <img ng-src="{{header1.icon}}" alt="Description" width="16" />
+          </th>
+          <th class="separator" colspan="4">Total</th>
           <th colspan="2">Goal</th>
         </tr>
         <tr>
           <th colspan="2"></th>
-          <th ng-repeat="header2 in headersLine2 track by $index">{{header2}}</th>
+          <th ng-repeat="h2 in headersLine2 track by $index" ng-class="{'separator': h2.last}">{{h2.label}}</th>
           <th>Principal</th>
           <th>Interest</th>
           <th>Total</th>
-          <th>Total</th>
+          <th class="separator">Total</th>
           <th>Month</th>
           <th>Total</th>
         </tr>

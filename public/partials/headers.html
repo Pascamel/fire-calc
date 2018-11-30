@@ -23,54 +23,80 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12" fire-loading="loaded">
+  <div class="col-xs-2">Institution</div>
+  <div class="col-xs-2">Product</div>
+  <div class="col-xs-3">Icon</div>
+  <div class="col-xs-5">Options</div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12 " fire-loading="loaded">
     <span ng-show="!headers.headers.length">No headers</span>
-    <ul ng-repeat="header in headers.headers track by header.id" class="list-unstyled">
+    <ul ng-repeat="header in headers.headers track by header.id" class="list-unstyled list-headers">
       <div class="form-inline">
         <div class="row">
-          <div class="col-xs-3">
+          <div class="col-xs-2">
             <span class="label-fake-input" ng-hide="header.$edit">
               {{header.label}}
             </span>
             <input type="text" ng-model="header.$editLabel" class="form-control" ng-show="header.$edit">
           </div>
-          <div class="col-xs-3">
+          <div class="col-xs-2">
             <span class="label-fake-input" ng-hide="header.$edit">
               {{header.sublabel}}
             </span>
             <input type="text" ng-model="header.$editSublabel" class="form-control" ng-show="header.$edit">
           </div>
-          <div class="col-xs-6" style="text-align: right">
-            <div class="checkbox padding612">
+          <div class="col-xs-3">
+            <span class="label-fake-input nowrap-ellipsis" ng-hide="header.$edit">
+              {{header.icon}}
+            </span>
+            <input type="text" ng-model="header.$editIcon" class="form-control" ng-show="header.$edit">
+          </div>
+          <div class="col-xs-2">
+            <div class="checkbox">
               <label>
-                <input type="checkbox" ng-model="header.principal" ng-disabled="!header.$edit"> P
+                <input type="checkbox" ng-model="header.interest" ng-disabled="!header.$edit"> Yields interest
               </label>
             </div>
-            <div class="checkbox padding612">
-              <label>
-                <input type="checkbox" ng-model="header.interest" ng-disabled="!header.$edit"> I
-              </label>
-            </div>
-            <div class="checkbox padding612">
-              <label>
-                <input type="checkbox" ng-model="header.total" ng-disabled="!header.$edit"> T
-              </label>
-            </div>
-            <a href class="btn btn-link" ng-hide="header.$edit" ng-click="editHeader(header)">Edit</a>
-            <a href class="btn btn-link" ng-show="header.$edit" ng-click="editHeaderConfirm(header)">Confirm</a>
-            <a href class="btn btn-link" ng-show="header.$edit" ng-click="editHeaderCancel(header)">Cancel</a>
-            <a href class="btn btn-link" ng-click="removeHeader(header)">Delete</a>
-            <a href class="btn btn-link" ng-click="moveUpHeader(header)" disabled="disabled">Up</a>
-            <a href class="btn btn-link" ng-click="moveDownHeader(header)" disabled="disabled">Down</a>
+          </div>
+          <div class="col-xs-3" style="text-align: right">
+            <a href class="btn btn-link" ng-show="header.$edit" ng-click="editHeaderConfirm(header)">
+              <i class="fa fa-lg fa-check"></i>
+            </a>
+            <a href class="btn btn-link" ng-show="header.$edit" ng-click="editHeaderCancel(header)">
+              <i class="fa fa-lg fa-times"></i>
+            </a>
+            <a href class="btn btn-link" ng-hide="header.$edit" ng-click="editHeader(header)">
+              <i class="fa fa-lg fa-pencil"></i>
+            </a>
+            <a href class="btn btn-link" ng-hide="header.$edit" ng-click="removeHeader(header)">
+              <i class="fa fa-lg fa-trash-o"></i>
+            </a>
+            <a href class="btn btn-link" ng-hide="header.$edit" ng-click="moveUpHeader($index)" ng-disabled="!$index">
+              <i class="fa fa-lg fa-chevron-up"></i>
+            </a>
+            <a href class="btn btn-link" ng-hide="header.$edit" ng-click="moveDownHeader($index)" ng-disabled="$index>=headers.headers.length-1">
+              <i class="fa fa-lg fa-chevron-down"></i>
+            </a>
           </div>
         </div>
       </div>
     </ul>
-    <div class="form-inline">
-      <input type="text" ng-model="newHeaderLabel" class="form-control" />
-      <input type="text" ng-model="newHeaderSublabel" class="form-control" />
-      <button class="btn btn-default" ng-click="addHeader()">Add header</button>
-      <button class="btn btn-default pull-right" ng-click="saveChanges()">Save</button>
+    <div class="row">
+      <div class="col-xs-2">
+        <input type="text" ng-model="newHeaderLabel" class="form-control" />
+      </div>
+      <div class="col-xs-2">
+        <input type="text" ng-model="newHeaderSublabel" class="form-control " />
+      </div>
+      <div class="col-xs-3">
+        <input type="text" ng-model="newHeaderIcon" class="form-control input-block" />
+      </div>
+      <div class="col-xs-5">
+        <button class="btn btn-default" ng-click="addHeader()">Add</button>
+        <button class="btn btn-default pull-right" ng-click="saveChanges()">Save</button>
+      </div>
     </div>
   </div>
 </div>
