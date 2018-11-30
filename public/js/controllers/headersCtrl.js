@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('fireapp').controller('headersCtrl', function($scope, AuthSvc, DataSvc, toastr) {
+angular.module('fireapp').controller('headersCtrl', function($scope, AuthSvc, DataSvc, modalSvc, toastr) {
   $scope.init = () => {
     $scope.currentYear = new Date().getFullYear();
     $scope.newHeaderLabel = '';
@@ -57,8 +57,13 @@ angular.module('fireapp').controller('headersCtrl', function($scope, AuthSvc, Da
   };
 
   $scope.removeHeader = (header) => {
-    _.remove($scope.headers.headers, (h) => {
-      return h.id === header.id;
+    modalSvc.showModal({
+      closeButtonText: 'Cancel',
+      actionButtonText: 'Delete Customer',
+      headerText: 'Delete roger lemerre?',
+      bodyText: 'Are you sure you want to delete this customer?'
+    }).then((result) => {
+      _.remove($scope.headers.headers, (h) => h.id === header.id);
     });
   };
 

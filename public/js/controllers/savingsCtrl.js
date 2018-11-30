@@ -52,7 +52,6 @@ angular.module('fireapp').controller('savingsCtrl', function($scope, $q, AuthSvc
         var headers = [header.sublabel || 'Principal'];
         if (header.interest) _.each(['Interest', 'Total'], (t) => headers.push(t)); 
         headers = _.map(headers, (h, idx) => {
-          console.log(h, idx, headers.length)
           return {
             label: h,
             last: idx === headers.length-1
