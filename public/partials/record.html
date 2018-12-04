@@ -1,0 +1,16 @@
+<div class="modal-header">
+  <span>
+    Record a new activity
+  </span>
+</div>
+
+<div class="modal-body">
+  <span>
+    todo activity={{modalOptions.activity}}
+  </span>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn" data-ng-click="modalOptions.close()">Cancel</button>
+  <button class="btn btn-primary" data-ng-click="modalOptions.ok(activity);">Add</button>
+</div>

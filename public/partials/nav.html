@@ -19,7 +19,7 @@
       <ul class="nav navbar-nav pull-right">
         <li><a href ui-sref="login" ng-hide="authSvc.isAuthenticated()">login</a></li>
         <li class="dropdown" uib-dropdown ng-show="authSvc.isAuthenticated()">
-          <a href role="button" class="dropdown-toggle" uib-dropdown-toggle>
+          <a href role="button" class="dropdown-toggle user-nav-item" uib-dropdown-toggle>
             {{ authSvc.userDisplay() }} <b class="caret"></b>
           </a>
           <ul class="dropdown-menu dropdown-menu-right">

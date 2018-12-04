@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('fireapp').controller('savingsCtrl', function($scope, $q, AuthSvc, DataSvc, CurrencySvc, toastr) {
+angular.module('fireapp').controller('savingsCtrl', function($scope, $q, AuthSvc, DataSvc, CurrencySvc, modalSvc, toastr) {
   $scope.addProperty = () => {
     $scope.data[$scope.newPropertyName] = 0
   };
@@ -220,6 +220,22 @@ angular.module('fireapp').controller('savingsCtrl', function($scope, $q, AuthSvc
 
     return data;
   }; 
+
+  $scope.recordPayment = () => {
+    modalSvc.showModal({
+      activity: {
+        month: new Date().getMonth() + 1,
+        year:  new Date().getFullYear(),
+        amount: 0.0,
+        institution: 'todo',
+        type: 'P'
+      }
+    }, {
+      templateUrl: '/partials/record.html'
+    }).then((result) => {
+      console.log('result', result);
+    });
+  };
 
   $scope.formatGoalsToSave = () => {
     return $scope.year_headers;

@@ -1,6 +1,9 @@
 label {
     font-weight: normal;
 }
+.navbar-nav > li > a.user-nav-item {
+  margin-right: -30px;
+}
 
 .panel-login {
   margin-top: 100px;

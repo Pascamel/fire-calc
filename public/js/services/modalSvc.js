@@ -36,7 +36,7 @@ angular.module('fireapp').service('modalSvc', function ($uibModal) {
         $scope.modalOptions.ok = (result) => {
           $uibModalInstance.close(result);
         };
-        $scope.modalOptions.close = (result) => {
+        $scope.modalOptions.close = () => {
           $uibModalInstance.dismiss('cancel');
         };
       }
