@@ -39,6 +39,7 @@ angular.module('fireapp').config(function($stateProvider, $urlRouterProvider, $l
 
 angular.module('fireapp').run(function($state, $rootScope) {
   $rootScope._ = _;
+  $rootScope.moment = moment;
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {

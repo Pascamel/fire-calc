@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('fireapp').service('modalSvc', function ($uibModal) {
+angular.module('fireapp').service('modalSvc', function ($uibModal, $sce) {
   var self = this;
 
   let modalDefaults = {
@@ -29,6 +29,10 @@ angular.module('fireapp').service('modalSvc', function ($uibModal) {
 
     angular.extend(tempModalDefaults, modalDefaults, customModalDefaults);
     angular.extend(tempModalOptions, modalOptions, customModalOptions);
+
+    _(['headerText', 'bodyText']).each((p) => {
+      tempModalOptions[p] = $sce.trustAsHtml(tempModalOptions[p]);
+    });
 
     if (!tempModalDefaults.controller) {
       tempModalDefaults.controller = ($scope, $uibModalInstance) => {

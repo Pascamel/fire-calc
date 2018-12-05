@@ -5,12 +5,12 @@
         <i class="fa fa-plus"></i>
         Activity
       </button>
-      <button class="btn" ng-class="{'btn-default': !dataUpdated, 'btn-danger': dataUpdated}" ng-click="saveChanges()">
+      <button class="btn pull-right" ng-class="{'btn-default': !dataUpdated, 'btn-danger': dataUpdated}" ng-click="saveChanges()">
         <i class="fa fa-floppy-o"></i>
         Save
       </button>
-      <span ng-show="dataUpdated">
-        <i class="fa fa-lg  fa-exclamation-triangle"></i>
+      <span class="pull-right" ng-show="dataUpdated">
+        <i class="fa fa-lg fa-exclamation-triangle"></i>
         Updates have been detected. Save now!
       </span>
     </div>
@@ -112,9 +112,16 @@
 <div class="row">
   <div class="col-xs-12" fire-loading="loaded">
     <div class="alert" ng-class="{'alert-danger': dataUpdated}">
-      <button class="btn" ng-class="{'btn-default': !dataUpdated, 'btn-danger': dataUpdated}" ng-click="saveChanges()">Save</button>
-      <span ng-show="dataUpdated">
-        <i class="fa fa-lg  fa-exclamation-triangle"></i>
+      <button class="btn btn-default" ng-click="recordPayment()">
+        <i class="fa fa-plus"></i>
+        Activity
+      </button>
+      <button class="btn pull-right" ng-class="{'btn-default': !dataUpdated, 'btn-danger': dataUpdated}" ng-click="saveChanges()">
+        <i class="fa fa-floppy-o"></i>
+        Save
+      </button>
+      <span class="pull-right" ng-show="dataUpdated">
+        <i class="fa fa-lg fa-exclamation-triangle"></i>
         Updates have been detected. Save now!
       </span>
     </div>

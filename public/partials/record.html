@@ -4,13 +4,34 @@
   </span>
 </div>
 
-<div class="modal-body">
-  <span>
-    todo activity={{modalOptions.activity}}
-  </span>
+<div class="modal-body" ng-init="a = modalOptions.activity">
+  <div class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Month</label>
+      <div class="col-sm-3">
+        <select class="form-control" ng-model="a.month" ng-options="i as moment().month(i-1).format('MMMM') for i in a.months"></select>
+      </div>
+      <div class="col-sm-2">
+        <select class="form-control" ng-model="a.year" ng-options="i as i for i in a.years"></select>
+      </div>
+      <label class="col-sm-2 control-label">Amount</label>
+      <div class="col-sm-3">
+        <input class="form-control" ng-model="a.amount" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Institution</label>
+      <div class="col-sm-7">
+        <select class="form-control" ng-model="a.institution" ng-options="i as i.label+(i.sublabel?(' > '+i.sublabel):'') for i in a.institutions" ng-change="a.type = 'P'"></select>
+      </div>
+      <div class="col-sm-3">
+        <select class="form-control" ng-model="a.type" ng-disabled="!a.institution.interest" ng-options="i[0] as i for i in a.institution.interest ? ['Principal', 'Interest'] : ['Principal']"></select>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="modal-footer">
-  <button type="button" class="btn" data-ng-click="modalOptions.close()">Cancel</button>
-  <button class="btn btn-primary" data-ng-click="modalOptions.ok(activity);">Add</button>
+  <button type="button" class="btn" ng-click="modalOptions.close()">Cancel</button>
+  <button class="btn btn-primary" ng-click="modalOptions.ok(a);" ng-disabled="!a.amount || !a.institution || !a.type">Add</button>
 </div>

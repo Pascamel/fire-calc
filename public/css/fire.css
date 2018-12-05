@@ -29,7 +29,7 @@ label {
 }
 
 .alert span {
-  margin-left: 20px;
+  margin: 6px 15px;
 }
 
 .loading-spinner {

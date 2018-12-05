@@ -40,6 +40,12 @@ angular.module('fireapp').directive('fireAmount', function() {
         }, (value) => {
           if (value !== null) $scope.amount = newTotalInstitution();
         });
+      } else {
+        $scope.$watch(() => {
+          return _.get($scope, ['institution', $scope.type]);
+        }, (value) => {
+          $scope.amount = value;
+        });
       }
 
       $scope.confirmEdit = () => {
