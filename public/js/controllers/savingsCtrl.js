@@ -233,21 +233,8 @@ angular.module('fireapp').controller('savingsCtrl', function($scope, $q, $timeou
     }, {
       templateUrl: '/partials/record.html'
     }).then((data) => {
-      modalSvc.showModal({
-        closeButtonText: 'Cancel',
-        actionButtonText: 'Save',
-        headerText: 'Add a new activity',
-        bodyText: ['Are you sure you want to save this activity?',
-          '<ul class="list-unstyled">', 
-          '<li>Amount: <b>' + $filter('amount')(parseFloat(data.amount)) + '</b></li>', 
-          '<li>Date: <b>' +  moment().month(data.month-1).format('MMMM') + ' ' + data.year + '</b></li>', 
-          '<li>Target: <b>' + data.institution.label+(data.institution.sublabel?(' > '+data.institution.sublabel):'') + '</b></li>', 
-          '</ul>'
-        ].join('')
-      }).then(() => {
-        var current = _.get($scope,['savings', data.year, data.month, data.institution.id, data.type], 0);
-       _.set($scope,['savings', data.year, data.month, data.institution.id, data.type], current + parseFloat(data.amount));
-      }).catch(() => {});
+      var current = _.get($scope,['savings', data.year, data.month, data.institution.id, data.type], 0);
+      _.set($scope,['savings', data.year, data.month, data.institution.id, data.type], current + parseFloat(data.amount));
     }).catch(() => {});
   };
 

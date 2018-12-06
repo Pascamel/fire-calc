@@ -33,27 +33,23 @@ angular.module('fireapp').directive('fireAmount', function() {
       var newTotalInstitution = () => {
         return _.reduce($scope.types.filter(e => e !== 'T'), (v, i) => v + _.get($scope, ['institution', i], 0), 0);
       }
-
-      if ($scope.type === 'T') {
-        $scope.$watch(() => {
-          return _.get($scope, ['institution', $scope.type]);
-        }, (value) => {
-          if (value !== null) $scope.amount = newTotalInstitution();
-        });
-      } else {
-        $scope.$watch(() => {
-          return _.get($scope, ['institution', $scope.type]);
-        }, (value) => {
+      
+      $scope.$watch(() => {
+        return _.get($scope, ['institution', $scope.type]);
+      }, (value) => {
+        if (_.isNil(value)) return;
+        if ($scope.type === 'T') {
+          $scope.amount = newTotalInstitution();
+        } else {
           $scope.amount = value;
-        });
-      }
+          if ($scope.types.indexOf('T') !== -1) $scope.institution['T'] = newTotalInstitution();
+        }
+      });
 
       $scope.confirmEdit = () => {
         $scope.amount = parseFloat($scope.$amount) || 0;
-
-        if (!$scope.institution) $scope.institution = {};
-        $scope.institution[$scope.type] = $scope.amount;
-
+        _.set($scope,['institution', $scope.type], $scope.amount);
+        
         if ($scope.types.indexOf('T') !== -1) $scope.institution['T'] = newTotalInstitution();
         
         $scope.$edit = false;
