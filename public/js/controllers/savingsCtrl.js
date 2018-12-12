@@ -183,11 +183,17 @@ angular.module('fireapp').controller('savingsCtrl', function($scope, $q, $timeou
     if (idxYear < 0) return 0;
 
     if (type === 'T') return _.reduce(['P', 'I'], (v, i) => v + $scope.totalInstitution(year, institution, i), 0);
+
     return _.reduce($scope.savings[year], (v, i) => v + _.get(i, [institution, type], 0), 0);
   };
 
   $scope.grandTotalInstitution = (institution, type) => {
-    return _($scope.savings).keys().reduce((acc, year) => acc + $scope.totalInstitution(year, institution, type), 0);
+    if (type === 'T') return _.reduce(['P', 'I'], (v, i) => v + $scope.grandTotalInstitution(institution, i), 0);
+
+    var sp = (type === 'P' && _.findIndex($scope.headers,(o) => { return o.id == institution; }) === 0) ? $scope.startingCapital : 0;
+    var ti = _($scope.savings).keys().reduce((acc, year) => acc + $scope.totalInstitution(year, institution, type), 0);
+
+    return sp + ti;
   };
 
   $scope.grandTotalHolding = () => {
