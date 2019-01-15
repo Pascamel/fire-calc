@@ -1,4 +1,20 @@
 <div class="row">
+  <div class="col-xs-12" fire-loading="loaded">
+    <div class="alert" ng-class="{'alert-danger': dataUpdated}">
+      <div style="height: 34px">
+      <button class="btn pull-right" ng-class="{'btn-default': !dataUpdated, 'btn-danger': dataUpdated}" ng-click="saveChanges()">
+        <i class="fa fa-floppy-o"></i>
+        Save
+      </button>
+      <span class="pull-right" ng-show="dataUpdated">
+        <i class="fa fa-lg fa-exclamation-triangle"></i>
+        Updates have been detected. Save now!
+      </span>
+    </div>
+  </div>
+</div>
+  
+<div class="row">
   <div class="col-xs-12">
     <h3>Starting point</h1>
   </div>
@@ -8,7 +24,7 @@
   <div class="col-xs-12" fire-loading="loaded">
     <div class="form-inline">
       <label>Starting Capital</label>
-      <input type="text" ng-model="headers.startingCapital" class="form-control /">
+      <input type="text" ng-model="headers.startingCapital" class="form-control" style="width: 80px" />
       <label>First month</label>
       <select ng-model="headers.firstMonth" class="form-control" ng-options="o as labelMonth(o) for o in _.range(1, 13)"></select>
       <select ng-model="headers.firstYear" class="form-control" ng-options="o as o for o in _.range(currentYear - 10, currentYear + 1)"></select>
@@ -18,7 +34,7 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <h3>Headers</h1>
+    <h3>Savings</h1>
   </div>
 </div>
 
@@ -30,73 +46,156 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12 " fire-loading="loaded">
+  <div class="col-xs-12" fire-loading="loaded">
     <span ng-show="!headers.headers.length">No headers</span>
-    <ul ng-repeat="header in headers.headers track by header.id" class="list-unstyled list-headers">
-      <div class="form-inline">
-        <div class="row">
-          <div class="col-xs-2">
-            <span class="label-fake-input" ng-hide="header.$edit">
-              {{header.label}}
-            </span>
-            <input type="text" ng-model="header.$editLabel" class="form-control" ng-show="header.$edit">
-          </div>
-          <div class="col-xs-2">
-            <span class="label-fake-input" ng-hide="header.$edit">
-              {{header.sublabel}}
-            </span>
-            <input type="text" ng-model="header.$editSublabel" class="form-control" ng-show="header.$edit">
-          </div>
-          <div class="col-xs-3">
-            <span class="label-fake-input nowrap-ellipsis" ng-hide="header.$edit">
-              {{header.icon}}
-            </span>
-            <input type="text" ng-model="header.$editIcon" class="form-control" ng-show="header.$edit">
-          </div>
-          <div class="col-xs-2">
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" ng-model="header.interest" ng-disabled="!header.$edit"> Yields interest
-              </label>
-            </div>
-          </div>
-          <div class="col-xs-3" style="text-align: right">
-            <a href class="btn btn-link" ng-show="header.$edit" ng-click="editHeaderConfirm(header)">
-              <i class="fa fa-lg fa-check"></i>
-            </a>
-            <a href class="btn btn-link" ng-show="header.$edit" ng-click="editHeaderCancel(header)">
-              <i class="fa fa-lg fa-times"></i>
-            </a>
-            <a href class="btn btn-link" ng-hide="header.$edit" ng-click="editHeader(header)">
-              <i class="fa fa-lg fa-pencil"></i>
-            </a>
-            <a href class="btn btn-link" ng-hide="header.$edit" ng-click="removeHeader(header)">
-              <i class="fa fa-lg fa-trash-o"></i>
-            </a>
-            <a href class="btn btn-link" ng-hide="header.$edit" ng-click="moveUpHeader($index)" ng-disabled="!$index">
-              <i class="fa fa-lg fa-chevron-up"></i>
-            </a>
-            <a href class="btn btn-link" ng-hide="header.$edit" ng-click="moveDownHeader($index)" ng-disabled="$index>=headers.headers.length-1">
-              <i class="fa fa-lg fa-chevron-down"></i>
-            </a>
+    <div class="form-inline form-headers" ng-repeat="header in headers.headers track by header.id">
+      <div class="row">
+        <div class="col-xs-2">
+          <span class="label-fake-input" ng-hide="header.$edit">
+            {{header.label}}
+          </span>
+          <input type="text" ng-model="header.$editLabel" class="form-control" ng-show="header.$edit">
+        </div>
+        <div class="col-xs-2">
+          <span class="label-fake-input" ng-hide="header.$edit">
+            {{header.sublabel}}
+          </span>
+          <input type="text" ng-model="header.$editSublabel" class="form-control" ng-show="header.$edit">
+        </div>
+        <div class="col-xs-3">
+          <span class="label-fake-input nowrap-ellipsis" ng-hide="header.$edit">
+            {{header.icon}}
+          </span>
+          <input type="text" ng-model="header.$editIcon" class="form-control" ng-show="header.$edit">
+        </div>
+        <div class="col-xs-2">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="header.interest" ng-disabled="!header.$edit"> Yields interest
+            </label>
           </div>
         </div>
+        <div class="col-xs-3" style="text-align: right">
+          <a href class="btn btn-link" ng-show="header.$edit" ng-click="editHeaderConfirm('headers', header)">
+            <i class="fa fa-lg fa-check"></i>
+          </a>
+          <a href class="btn btn-link" ng-show="header.$edit" ng-click="editHeaderCancel('headers', header)">
+            <i class="fa fa-lg fa-times"></i>
+          </a>
+          <a href class="btn btn-link" ng-hide="header.$edit" ng-click="editHeader('headers', header)">
+            <i class="fa fa-lg fa-pencil"></i>
+          </a>
+          <a href class="btn btn-link" ng-hide="header.$edit" ng-click="removeHeader('headers', header)">
+            <i class="fa fa-lg fa-trash-o"></i>
+          </a>
+          <a href class="btn btn-link" ng-hide="header.$edit" ng-click="moveUpHeader('headers', $index)" ng-disabled="!$index">
+            <i class="fa fa-lg fa-chevron-up"></i>
+          </a>
+          <a href class="btn btn-link" ng-hide="header.$edit" ng-click="moveDownHeader('headers', $index)" ng-disabled="$index>=headers.headers.length-1">
+            <i class="fa fa-lg fa-chevron-down"></i>
+          </a>
+        </div>
       </div>
-    </ul>
+    </div>
     <div class="row">
       <div class="col-xs-2">
         <input type="text" ng-model="newHeaderLabel" class="form-control" />
       </div>
       <div class="col-xs-2">
-        <input type="text" ng-model="newHeaderSublabel" class="form-control " />
+        <input type="text" ng-model="newHeaderSublabel" class="form-control" />
       </div>
       <div class="col-xs-3">
         <input type="text" ng-model="newHeaderIcon" class="form-control input-block" />
       </div>
-      <div class="col-xs-5">
-        <button class="btn btn-default" ng-click="addHeader()">Add</button>
-        <button class="btn btn-default pull-right" ng-click="saveChanges()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <h3>Income</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12 " fire-loading="loaded">
+    <span ng-show="!headers.incomes.length">No headers</span>
+    <div class="form-inline form-headers" ng-repeat="income in headers.incomes track by income.id">
+      <div class="row">
+        <div class="col-xs-7">
+          <span class="label-fake-input" ng-hide="income.$edit">
+            {{income.label}}
+          </span>
+          <input type="text" ng-model="income.$editLabel" class="form-control" ng-show="income.$edit">
+        </div>
+        <div class="col-xs-3">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="income.pretax" ng-hide="income.$edit" disabled>
+              <input type="checkbox" ng-model="income.$editPretax" ng-show="income.$edit">
+              Pre-tax
+            </label>
+          </div>
+          <div class="btn-group">
+            <label class="btn btn-default" ng-model="income.count" uib-btn-radio="1">1</label>
+            <label class="btn btn-default" ng-model="income.count" uib-btn-radio="2">2</label>
+          </div>
+        </div>
+        <div class="col-xs-2" style="text-align: right">
+          <a href class="btn btn-link" ng-show="income.$edit" ng-click="editHeaderConfirm('incomes', income)">
+            <i class="fa fa-lg fa-check"></i>
+          </a>
+          <a href class="btn btn-link" ng-show="income.$edit" ng-click="editHeaderCancel('incomes', income)">
+            <i class="fa fa-lg fa-times"></i>
+          </a>
+          <a href class="btn btn-link" ng-hide="income.$edit" ng-click="editHeader('incomes', income)">
+            <i class="fa fa-lg fa-pencil"></i>
+          </a>
+          <a href class="btn btn-link" ng-hide="income.$edit" ng-click="removeHeader('incomes', income)">
+            <i class="fa fa-lg fa-trash-o"></i>
+          </a>
+          <a href class="btn btn-link" ng-hide="income.$edit" ng-click="moveUpHeader('incomes', $index)" ng-disabled="!$index">
+            <i class="fa fa-lg fa-chevron-up"></i>
+          </a>
+          <a href class="btn btn-link" ng-hide="income.$edit" ng-click="moveDownHeader('incomes', $index)" ng-disabled="$index>=headers.headers.length-1">
+            <i class="fa fa-lg fa-chevron-down"></i>
+          </a>
+        </div>
       </div>
+    </div>
+    <div class="form-inline form-headers">
+      <div class="row">
+        <div class="col-xs-7">
+          <input type="text" ng-model="newIncomeLabel" class="form-control" />
+        </div>
+        <div class="col-xs-3">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="newIncomePretax" ng-disabled="!income.$edit"> Pre-tax
+            </label>
+          </div>
+          <div class="btn-group">
+            <label class="btn btn-default" ng-model="newIncomeCount" uib-btn-radio="1">1</label>
+            <label class="btn btn-default" ng-model="newIncomeCount" uib-btn-radio="2">2</label>
+          </div>
+          <button class="btn btn-default" ng-click="addHeader('headers')">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12" fire-loading="loaded">
+    <div class="alert" ng-class="{'alert-danger': dataUpdated}">
+      <button class="btn pull-right" ng-class="{'btn-default': !dataUpdated, 'btn-danger': dataUpdated}" ng-click="saveChanges()">
+        <i class="fa fa-floppy-o"></i>
+        Save
+      </button>
+      <span class="pull-right" ng-show="dataUpdated">
+        <i class="fa fa-lg fa-exclamation-triangle"></i>
+        Updates have been detected. Save now!
+      </span>
     </div>
   </div>
 </div>

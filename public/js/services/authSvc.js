@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('fireapp').service('AuthSvc', function ($q, $timeout) {
+angular.module('fireapp').service('AuthSvc', function($q, $timeout) {
   var self = this;
 
   self.isAuthenticated = () => {

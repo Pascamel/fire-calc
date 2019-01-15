@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('fireapp').service('DataSvc', function ($q) {
+angular.module('fireapp').service('DataSvc', function($q) {
   var self = this;
 
   this.firestore = firebase.firestore();
@@ -20,13 +20,13 @@ angular.module('fireapp').service('DataSvc', function ($q) {
     return uuid;
   }
 
-  this.lastUpdateFinances = () => {
+  this.lastUpdateDocument = (document) => {
     var deferred = $q.defer();
 
     let userId = firebase.auth().currentUser.uid;
     if (!userId) return deferred.reject({ message: 'User is not anthenticated' });
 
-    this.firestore.collection('finances').doc(userId).get().then((snapshot) => {
+    this.firestore.collection(document).doc(userId).get().then((snapshot) => {
       if (snapshot.exists) {
         deferred.resolve(snapshot.data().last_update);
       } else {
@@ -35,6 +35,14 @@ angular.module('fireapp').service('DataSvc', function ($q) {
     });
 
     return deferred.promise;
+  };
+
+  this.lastUpdateSavings = () => {
+    return this.lastUpdateDocument('savings');
+  };
+
+  this.lastUpdateIncome = () => {
+    return this.lastUpdateDocument('income');
   };
 
   this.loadHeaders = () => {
@@ -66,13 +74,13 @@ angular.module('fireapp').service('DataSvc', function ($q) {
     return this.firestore.collection('headers').doc(userId).set(payload);
   };
 
-  this.loadFinances = () => {
+  this.loadSavings = () => {
     var deferred = $q.defer();
 
     let userId = firebase.auth().currentUser.uid;
     if (!userId) return deferred.reject({ message: 'User is not anthenticated' });
 
-    this.firestore.collection('finances').doc(userId).get().then((snapshot) => {
+    this.firestore.collection('savings').doc(userId).get().then((snapshot) => {
       if (snapshot.exists) {
         deferred.resolve(snapshot.data());
       } else {
@@ -83,17 +91,47 @@ angular.module('fireapp').service('DataSvc', function ($q) {
     return deferred.promise;
   };
 
-  this.saveFinances = (data, goals) => {
+  this.saveSavings = (data, headers) => {
     let userId = firebase.auth().currentUser.uid;
     if (!userId) return;
 
     let payload = {
       last_update: (new Date()).getTime(),
       data: JSON.parse(angular.toJson(data)),
-      goals: JSON.parse(angular.toJson(goals))
+      yearly_data: JSON.parse(angular.toJson(headers))
+    };
+
+    return this.firestore.collection('savings').doc(userId).set(payload);
+  };
+
+  this.loadIncome = () => {
+    var deferred = $q.defer();
+
+    let userId = firebase.auth().currentUser.uid;
+    if (!userId) return deferred.reject({ message: 'User is not anthenticated' });
+
+    this.firestore.collection('income').doc(userId).get().then((snapshot) => {
+      if (snapshot.exists) {
+        deferred.resolve(snapshot.data());
+      } else {
+        deferred.resolve({});
+      }
+    });
+
+    return deferred.promise;
+  };
+
+  this.saveIncome = (data, headers) => {
+    let userId = firebase.auth().currentUser.uid;
+    if (!userId) return;
+
+    let payload = {
+      last_update: (new Date()).getTime(),
+      data: JSON.parse(angular.toJson(data)),
+      yearly_data: JSON.parse(angular.toJson(headers))
     }
 
-    return this.firestore.collection('finances').doc(userId).set(payload);
+    return this.firestore.collection('income').doc(userId).set(payload);
   };
 
   return self;

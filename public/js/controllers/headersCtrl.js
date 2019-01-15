@@ -2,10 +2,14 @@
 
 angular.module('fireapp').controller('headersCtrl', function($scope, AuthSvc, DataSvc, modalSvc, toastr) {
   $scope.init = () => {
+    $scope.dataUpdated = false;
     $scope.currentYear = new Date().getFullYear();
     $scope.newHeaderLabel = '';
     $scope.newHeaderSublabel = '';
     $scope.newHeaderIcon = '';
+    $scope.newIncomeLabel = '';
+    $scope.newIncomePretax = false;
+    $scope.newIncomeCount = 1;
     $scope.headers = {};
     $scope.headers.startingCapital = 0;
     $scope.headers.firstMonth = new Date().getMonth();
@@ -23,8 +27,8 @@ angular.module('fireapp').controller('headersCtrl', function($scope, AuthSvc, Da
     return moment().month(m-1).format('MMMM');
   };
 
-  $scope.addHeader = () => {
-    let h = {
+  var defaultHeader = (t) => {
+    if (t == 'headers') return {
       id: DataSvc.newUUID(),
       label: $scope.newHeaderLabel,
       sublabel: $scope.newHeaderSublabel,
@@ -32,55 +36,96 @@ angular.module('fireapp').controller('headersCtrl', function($scope, AuthSvc, Da
       sorting: $scope.headers.headers.length,
       interest: false
     };
-    $scope.headers.headers.push(h);
-    $scope.newHeaderLabel = '';
-    $scope.newHeaderSublabel = '';
-    $scope.newHeaderIcon = '';
+    if (t == 'incomes') return {
+      id: DataSvc.newUUID(),
+      label: $scope.newIncomeLabel,
+      pretax: $scope.newIncomePretax,
+      count: $scope.newIncomeCount,
+      sorting: $scope.headers.headers.length,
+    }
+    return {};
   };
 
-  $scope.editHeader = (header) => {
-    header.$edit = true;
-    header.$editLabel = header.label;
-    header.$editSublabel = header.sublabel;
-    header.$editIcon = header.icon;
+  $scope.addHeader = (t) => {
+    $scope.headers.headers.push(defaultHeader(t));
+    if (t === 'headers') {
+      $scope.newHeaderLabel = '';
+      $scope.newHeaderSublabel = '';
+      $scope.newHeaderIcon = '';
+    } 
+    if (t === 'incomes') {
+      $scope.newIncomeLabel = '';
+      $scope.newIncomePretax = false;
+      $scope.newIncomeCount = 1;
+    }
   };
 
-  $scope.editHeaderConfirm = (header) => {
-    header.label = header.$editLabel;
-    header.sublabel = header.$editSublabel;
-    header.icon = header.$editIcon;
-    header.$edit = false;
+  $scope.editHeader = (t, header) => {
+    if (t === 'headers') {
+      header.$edit = true;
+      header.$editLabel = header.label;
+      header.$editSublabel = header.sublabel;
+      header.$editIcon = header.icon;
+    }
+    if (t === 'incomes') {
+      header.$edit = true;
+      header.$editLabel = header.label;
+      header.$editPretax = header.pretax;
+      header.$editCount = header.count;
+    }
+  };
+
+  $scope.editHeaderConfirm = (t, header) => {
+    if (t === 'headers') {
+      header.label = header.$editLabel;
+      header.sublabel = header.$editSublabel;
+      header.icon = header.$editIcon;
+      header.$edit = false;
+      $scope.dataUpdated = true;
+    }
+    if (t === 'incomes') {
+      header.label = header.$editLabel;
+      header.pretax = header.$editPretax;
+      header.count = header.$editCount;
+      header.$edit = false;
+      $scope.dataUpdated = true;
+    }
   }
 
-  $scope.editHeaderCancel = (header) => {
-    header.$edit = false;
+  $scope.editHeaderCancel = (t, header) => {
+    if (t === 'headers' || t === 'incomes') {
+      header.$edit = false;
+    }
   };
 
-  $scope.removeHeader = (header) => {
+  $scope.removeHeader = (t, header) => {
     modalSvc.showModal({
       closeButtonText: 'Cancel',
       actionButtonText: 'Delete',
       headerText: 'Delete',
-      bodyText: 'Are you sure you want to delete this institution?'
+      bodyText: 'Are you sure you want to delete this header?'
     }).then((result) => {
-      _.remove($scope.headers.headers, (h) => h.id === header.id);
+      _.remove($scope.headers[t], (h) => h.id === header.id);
+      $scope.dataUpdated = true;
     });
   };
 
-  $scope.moveUpHeader = (index) => {
-    if (index <= 0 || index >= $scope.headers.headers.length) return;
+  $scope.moveUpHeader = (t, index) => {
+    if (index <= 0 || index >= $scope.headers[t].length) return;
 
-    var tmp = $scope.headers.headers[index-1];
-    $scope.headers.headers[index-1] = $scope.headers.headers[index];
-    $scope.headers.headers[index] = tmp;
+    var tmp = $scope.headers[t][index-1];
+    $scope.headers[t][index-1] = $scope.headers[t][index];
+    $scope.headers[t][index] = tmp;
+    $scope.dataUpdated = true;
   };
 
-  $scope.moveDownHeader = (index) => {
-    if (index < 0 || index >= $scope.headers.headers.length - 1) return;
+  $scope.moveDownHeader = (t, index) => {
+    if (index < 0 || index >= $scope.headers[t].length - 1) return;
 
-    var tmp = $scope.headers.headers[index+1];
-    $scope.headers.headers[index+1] = $scope.headers.headers[index];
-    $scope.headers.headers[index] = tmp;
+    var tmp = $scope.headers[t][index+1];
+    $scope.headers[t][index+1] = $scope.headers[t][index];
+    $scope.headers[t][index] = tmp;
+    $scope.dataUpdated = true;
   };
 
   $scope.saveChanges = () => {
@@ -90,11 +135,18 @@ angular.module('fireapp').controller('headersCtrl', function($scope, AuthSvc, Da
       delete header.$editSublabel;
       delete header.$editIcon;
     });
+    _.each($scope.headers.incomes, (header) => {
+      delete header.$edit;
+      delete header.$editLabel;
+      delete header.$editPretax;
+      delete header.$editCount;
+    });
 
     $scope.headers.startingCapital = parseFloat($scope.headers.startingCapital) || 0;
 
     DataSvc.saveHeaders($scope.headers).then(() => {
       toastr.success('Headers updated successfully');
+      $scope.dataUpdated = false;
     }).catch((error) => {
       toastr.error(error.message || 'An error occurred. Please try again later.');
     });

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('fireapp').service('modalSvc', function ($uibModal, $sce) {
+angular.module('fireapp').service('modalSvc', function($uibModal, $sce) {
   var self = this;
 
   let modalDefaults = {

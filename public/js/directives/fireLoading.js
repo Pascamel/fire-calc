@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('fireapp').directive('fireLoading', function ($compile) {
+angular.module('fireapp').directive('fireLoading', function($compile) {
   return {
     restrict: 'A',
-    link: function (scope, element, attrs) {
+    link: function(scope, element, attrs) {
       element.parent().append('<div class="col-xs-12 loading-spinner" ng-show="loaded"><div class="fa fa-spinner fa-spin"></div></div>');
       scope.$watch(attrs.fireLoading, (val) => {
         if (val) {

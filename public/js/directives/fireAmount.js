@@ -17,12 +17,11 @@ angular.module('fireapp').directive('fireAmount', function() {
     </div>\
     ',
     controller: function($scope, $element, $timeout, $rootScope) {
-
       $scope.$edit = false;
       $scope.amount = _.reduce($scope.type === 'T' ? ['P', 'I'] : [$scope.type], (v, i) => v + _.get($scope, ['institution', i], 0), 0);
 
       $scope.enterEdit = () => {
-        if ($scope.type === 'T') return;
+        if ($scope.type === 'T'|| $scope.$edit) return;
         $scope.$amount = $scope.amount;
         $scope.$edit = true;
         $timeout(() => {
@@ -31,29 +30,37 @@ angular.module('fireapp').directive('fireAmount', function() {
       };
 
       var newTotalInstitution = () => {
-        return _.reduce($scope.types.filter(e => e !== 'T'), (v, i) => v + _.get($scope, ['institution', i], 0), 0);
+        return _.reduce(($scope.types || []).filter(e => e !== 'T'), (v, i) => v + _.get($scope, ['institution', i], 0), 0);
       }
       
       $scope.$watch(() => {
-        return _.get($scope, ['institution', $scope.type]);
+        return _.get($scope, ['institution', ($scope.type === 'R') ? $scope.id : $scope.type]);
       }, (value) => {
         if (_.isNil(value)) return;
         if ($scope.type === 'T') {
           $scope.amount = newTotalInstitution();
         } else {
           $scope.amount = value;
-          if ($scope.types.indexOf('T') !== -1) $scope.institution['T'] = newTotalInstitution();
+          if (($scope.types || []).indexOf('T') !== -1) $scope.institution['T'] = newTotalInstitution();
         }
       });
 
       $scope.confirmEdit = () => {
         $scope.amount = parseFloat($scope.$amount) || 0;
-        _.set($scope,['institution', $scope.type], $scope.amount);
+        if ($scope.type === 'R') {
+          _.set($scope, ['institution', $scope.id], $scope.amount);
+        } else {
+          _.set($scope, ['institution', $scope.type], $scope.amount);
+        }
         
-        if ($scope.types.indexOf('T') !== -1) $scope.institution['T'] = newTotalInstitution();
+        if (($scope.types || []).indexOf('T') !== -1) $scope.institution['T'] = newTotalInstitution();
         
         $scope.$edit = false;
-        $rootScope.$broadcast('savings:updated');
+        if ($scope.type === 'R') {
+          $rootScope.$broadcast('revenues:updated');
+        } else {
+          $rootScope.$broadcast('savings:updated');
+        }
       };
 
       $scope.cancelEdit = () => {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('fireapp').service('CurrencySvc', function ($q) {
+angular.module('fireapp').service('CurrencySvc', function($q) {
   var self = this;
 
   this.roundFloat = (num) => {

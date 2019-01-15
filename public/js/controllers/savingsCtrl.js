@@ -15,10 +15,10 @@ angular.module('fireapp').controller('savingsCtrl', function($scope, $q, $timeou
       useAbsolutePositioning: false
     };
 
-    $q.all([DataSvc.loadHeaders(), DataSvc.loadFinances()]).then((data) => {
+    $q.all([DataSvc.loadHeaders(), DataSvc.loadSavings()]).then((data) => {
       $scope.formatHeaders(data[0]);
       $scope.formatData(data[1].data);
-      $scope.formatYearHeaders(data[1].goals);
+      $scope.formatYearHeaders(data[1].yearly_data);
       $scope.loaded = true;
     }).catch((error) => {
       toastr.error(error.message || 'An error occurred. Please try again later.');
@@ -100,7 +100,7 @@ angular.module('fireapp').controller('savingsCtrl', function($scope, $q, $timeou
   }; 
 
   $scope.formatYearHeaders = (d) => {
-    $scope.year_headers = d;
+    $scope.year_headers = d || {collapsed: {}, goals: {}};
   };
 
   $scope.startOfYearAmount = (year) => {
@@ -163,7 +163,7 @@ angular.module('fireapp').controller('savingsCtrl', function($scope, $q, $timeou
     return CurrencySvc.roundFloat(achieved - goal);
   };
 
-  $scope.goalTotal = (month, year) => {
+  $scope.goalYearToDate = (month, year) => {
     var idxYear = _($scope.savings).keys().indexOf(year);
     if (idxYear < 0) return 0;
     var idxMonth = _($scope.savings[year]).keys().indexOf(month);
@@ -206,26 +206,9 @@ angular.module('fireapp').controller('savingsCtrl', function($scope, $q, $timeou
     return $scope.totalHolding(month, year);
   };
 
-  $scope.$on('savings:updated', function(event, data) {
+  $scope.$on('savings:updated', (event, data) => {
     $scope.dataUpdated = true;
   });
-
-  $scope.formatDataToSave = () => {
-    let data = [];
-
-    _.each($scope.savings, (data_year, year) => {
-      _.each(data_year, (data_month, month) => {
-        _.each(data_month, (data_institution, institution) => {
-          _.each(data_institution, (amount, type) => {
-            if (type === 'T') return;
-            data.push({year: parseInt(year), month: parseInt(month), institution: institution, type: type, amount: amount});
-          });
-        })
-      });
-    });
-
-    return data;
-  }; 
 
   $scope.recordPayment = () => {
     modalSvc.showModal({
@@ -244,12 +227,29 @@ angular.module('fireapp').controller('savingsCtrl', function($scope, $q, $timeou
     }).catch(() => {});
   };
 
-  $scope.formatGoalsToSave = () => {
+  $scope.formatDataToSave = () => {
+    let data = [];
+
+    _.each($scope.savings, (data_year, year) => {
+      _.each(data_year, (data_month, month) => {
+        _.each(data_month, (data_institution, institution) => {
+          _.each(data_institution, (amount, type) => {
+            if (type === 'T') return;
+            data.push({year: parseInt(year), month: parseInt(month), institution: institution, type: type, amount: amount});
+          });
+        })
+      });
+    });
+
+    return data;
+  }; 
+
+  $scope.formatYearHeadersToSave = () => {
     return $scope.year_headers;
   }; 
 
   $scope.saveChanges = () => {
-    DataSvc.saveFinances($scope.formatDataToSave(), $scope.formatGoalsToSave()).then(() => {
+    DataSvc.saveSavings($scope.formatDataToSave(), $scope.formatYearHeadersToSave()).then(() => {
       toastr.success('Data updated successfully');
       $scope.dataUpdated = false;
     }).catch((error) => {
