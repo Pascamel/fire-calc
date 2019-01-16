@@ -1,10 +1,6 @@
 'use strict';
 
 angular.module('fireapp').controller('savingsCtrl', function($scope, $q, $timeout, $filter, AuthSvc, DataSvc, CurrencySvc, modalSvc, toastr) {
-  $scope.addProperty = () => {
-    $scope.data[$scope.newPropertyName] = 0
-  };
-
   $scope.init = () => {
     $scope.dataUpdated = false;
     $scope.headers = {};

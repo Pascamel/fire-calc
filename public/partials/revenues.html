@@ -67,7 +67,7 @@
           <td ng-show="totalMonth(year, month) === 0" colspan="3"></td>
           <td ng-hide="totalMonth(year, month) === 0">{{ totalMonthPost(year, month) | amount:true }}</td>
           <td ng-hide="totalMonth(year, month) === 0">{{ totalMonthPre(year, month) | amount:true }}</td>
-          <td ng-hide="totalMonth(year, month) === 0" ng-class="{'danger': savingRateMonth(year, month) < 0.5, 'success': savingRateMonth(year, month) >= 0.5}">
+          <td ng-hide="totalMonth(year, month) === 0" ng-class="savingRateMonth(year, month) | goal:0.5">
             {{savingRateMonth(year, month) * 100| number :2 }}%
             <span></span>
           </td>
@@ -78,7 +78,7 @@
           <td ng-repeat="header in headersLine">{{ yearlyIncome(year, header) | amount:true }}</td>
           <td>{{ totalYearPost(year) | amount:true }}</td>
           <td>{{ totalYearPre(year) | amount:true }}</td>
-          <td ng-class="{'danger': savingRateYear(year) < 0.5, 'success': savingRateYear(year) >= 0.5}">
+          <td ng-class="savingRateYear(year) | goal:0.5">
             {{ savingRateYear(year) * 100 | number:2 }}%
           </td>
         </tr>

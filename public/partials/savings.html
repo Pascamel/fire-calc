@@ -63,7 +63,7 @@
           <td ng-show="year_headers.collapsed[year]">Total</td>
           <td ng-show="year_headers.collapsed[year]" class="warning">{{ totalHolding('12', year) | amount }}</td>
           <td ng-show="year_headers.collapsed[year]">Goal</td>
-          <td ng-show="year_headers.collapsed[year]" ng-class="{'danger': goalYearToDate('12', year) < 0, 'success': goalYearToDate('12', year) >= 0}">
+          <td ng-show="year_headers.collapsed[year]" ng-class="goalYearToDate('12', year) | goal:0">
             {{ goalYearToDate('12', year) | amount:true }}
           </td>
         </tr>
@@ -77,10 +77,10 @@
           <td ng-hide="totalMonth(month, year, 'T') === 0">
             {{ totalHolding(month, year) | amount }}
           </td>
-          <td ng-hide="totalMonth(month, year, 'T') === 0" ng-class="{'danger': goalMonth(month, year) < 0, 'success': goalMonth(month, year) >= 0}">
+          <td ng-hide="totalMonth(month, year, 'T') === 0" ng-class="goalMonth(month, year) | goal:0">
             {{ goalMonth(month, year) | amount:true }}
           </td>
-          <td ng-hide="totalMonth(month, year, 'T') === 0" ng-class="{'danger': goalTotal(month, year) < 0, 'success': goalTotal(month, year) >= 0}">
+          <td ng-hide="totalMonth(month, year, 'T') === 0" ng-class="goalTotal(month, year) | goal:0">
             {{ goalYearToDate(month, year) | amount:true }}
           </td>
         </tr>
@@ -92,7 +92,7 @@
           <td>Total</td>
           <td class="warning">{{ totalHolding('12', year) | amount }}</td>
           <td>Goal</td>
-          <td ng-class="{'danger': goalYearToDate('12', year) < 0, 'success': goalYearToDate('12', year) >= 0}">
+          <td ng-class="goalYearToDate('12', year) | goal:0">
             {{ goalYearToDate('12', year) | amount:true }}
           </td>
         </tr>
